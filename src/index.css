@@ -12,3 +12,17 @@ body {
   border: 0 !important;
   box-shadow: none !important;
 }
+
+.bg-color {
+  background-color: #a2979787 !important;
+}
+
+tr:nth-child(even) {
+  background-color: #000000 !important;
+  color: #0d6efd
+  ;
+}
+
+table, ul {
+  table-layout: fixed;
+}
