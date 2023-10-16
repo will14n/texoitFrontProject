@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { fetchData } from "../helpers/fetchData.js"
 
 
-export const useFetchData = (endPoint, loading) => {
+export const useFetchData = (endPoint) => {
     // console.log(loadingObject)
     // this.setState({[loadingObject]: true})
     // console.log(this.setState)
@@ -19,8 +19,8 @@ export const useFetchData = (endPoint, loading) => {
         getData()
     }, [endPoint])
 
-    return {
+    return [{
         data,
         isLoading,
-    }
+    }]
 }
