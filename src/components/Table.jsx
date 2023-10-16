@@ -1,4 +1,4 @@
-export const Table = ({ colls, data, titleAlign = 'text-start', rowsAlign = 'text-start' }) => {
+export default function Table({ colls, data, isLoading, titleAlign = 'text-start', rowsAlign = 'text-start' })  {
   return (
     <>
       <table className="table table-striped">
@@ -13,15 +13,15 @@ export const Table = ({ colls, data, titleAlign = 'text-start', rowsAlign = 'tex
         </thead>
         <tbody className={"table-group-divider " + rowsAlign}>
           {
-            data.map((line, index) =>
-              <tr key={index}>
-                {
-                  Object.keys(data[index]).map((item, idx) =>
-                    <td key={idx}>{data[index][item]}</td>
-                  )
-                }
-              </tr>
-            )
+              data.map((line, index) =>
+                <tr key={index}>
+                  {
+                    Object.keys(data[index]).map((item, idx) =>
+                      <td key={idx}>{data[index][item]}</td>
+                    )
+                  }
+                </tr>
+              )
           }
         </tbody>
       </table>
