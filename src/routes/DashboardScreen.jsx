@@ -1,70 +1,145 @@
-import { Table } from "../components/Table"
+import { useContext, useEffect, useState } from "react"
+import { MovieContext } from "./context/MovieContext"
+import Table from "../components/Table"
+import { Card } from "../components/Card"
+import { useForm } from "../hooks/useForm"
+import { useFetchData } from "../hooks/useFetchData"
+import { useFetch } from "../hooks/useFetch"
 
-export const DashboardScreen = () => {
-  const yearsWithMultipleWinners = {"years":[{"year":1986,"winnerCount":2},{"year":1990,"winnerCount":2},{"year":2015,"winnerCount":2}]}
-  const studiosWithWinCount = {"studios":[{"name":"Columbia Pictures","winCount":7},{"name":"Paramount Pictures","winCount":6},{"name":"Warner Bros.","winCount":5},{"name":"20th Century Fox","winCount":4},{"name":"MGM","winCount":3},{"name":"Universal Studios","winCount":2},{"name":"Universal Pictures","winCount":2},{"name":"Hollywood Pictures","winCount":2},{"name":"Nickelodeon Movies","winCount":1},{"name":"C2 Pictures","winCount":1},{"name":"Summit Entertainment","winCount":1},{"name":"Hasbro","winCount":1},{"name":"Associated Film Distribution","winCount":1},{"name":"Revolution Studios","winCount":1},{"name":"First Look Pictures","winCount":1},{"name":"Focus Features","winCount":1},{"name":"Cannon Films","winCount":1},{"name":"United Artists","winCount":1},{"name":"Touchstone Pictures","winCount":1},{"name":"Samuel Goldwyn Films","winCount":1},{"name":"Quality Flix","winCount":1},{"name":"TriStar Pictures","winCount":1},{"name":"Franchise Pictures","winCount":1},{"name":"Relativity Media","winCount":1},{"name":"Castle Rock Entertainment","winCount":1},{"name":"Screen Gems","winCount":1},{"name":"Triumph Releasing","winCount":1},{"name":"DreamWorks","winCount":1}]}
-  const studiosWithWinCountTop3 = studiosWithWinCount.studios.filter((i, e) => e <= 2)
-  const maxMinWinIntervalForProducers = {"min":[{"producer":"Joel Silver","interval":1,"previousWin":1990,"followingWin":1991}],"max":[{"producer":"Matthew Vaughn","interval":13,"previousWin":2002,"followingWin":2015}]}
+export function DashboardScreen() {
+  const {
+    yearsWithMultipleWinners, setYearsWithMultipleWinners,
+    studiosWithWinCountTop3, setStudiosWithWinCountTop3,
+    maxMinWinIntervalForProducers, setMaxMinWinIntervalForProducers,
+    listMovieWinnersByYear, setListMovieWinnersByYear,
+    yearFilter, setYearFilter,
+  } = useContext(MovieContext)
+  const fetchDashboard = async () => {
+    const response = await fetch('https://tools.texoit.com/backend-java/api/movies?projection=years-with-multiple-winners')
+    const data = await response.json()
+    setYearsWithMultipleWinners(data.years)
+    const response2 = await fetch('https://tools.texoit.com/backend-java/api/movies?projection=studios-with-win-count')
+    const data2 = await response2.json()
+    setStudiosWithWinCountTop3(data2.studios.filter((i, e) => e <= 2))
+    const response3 = await fetch('https://tools.texoit.com/backend-java/api/movies?projection=max-min-win-interval-for-producers')
+    const data3 = await response3.json()
+    setMaxMinWinIntervalForProducers(data3)
+  }
+
+  const fetchWinnersByYear = async (year) => {
+    const response4 = await fetch(`https://tools.texoit.com/backend-java/api/movies?winner=true&year=${year}`)
+    const data4 = await response4.json()
+    setListMovieWinnersByYear(data4)
+  }
+
+
+  const initialForm = {
+    yearFilter: ''
+  }
+  const { formState, yearFilterInput, onInputChange } = useForm(initialForm)
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setYearFilter(formState)
+    fetchWinnersByYear(formState.yearFilter)
+  }
+  useEffect(() => {
+    fetchDashboard()
+  }, [])
   return (
     <>
       <div className="row mt-3 m-4">
-        <div className="col-sm-6 mb-3 mb-sm-0">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">List years with multiple winners</h5>
+        {
+          yearsWithMultipleWinners &&
+          <div className="col-sm-6 col-md-6 mb-3 mb-sm-0">
+            <Card
+              title='List years with multiple winners'
+              colls={['Year', 'Win Count']}
+              data={yearsWithMultipleWinners}
+              loading={yearsWithMultipleWinners && false}
+
+            >
               <Table
-                colls={[ 'Year', 'Win Count' ]}
-                data={yearsWithMultipleWinners.years}
+                colls={['Year', 'Win Count']}
+                data={yearsWithMultipleWinners}
               />
-            </div>
+            </Card>
           </div>
-        </div>
-        <div className="col-sm-6">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Top 3 studios with winners</h5>
+        }
+        {
+          studiosWithWinCountTop3 &&
+          <div className="col-sm-6 col-md-6 mb-3 mb-sm-0">
+            {/* {console.log(studiosWithWinCountTop3)} */}
+            <Card
+              title='Top 3 studios with winners'
+              colls={['Name', 'Win Count']}
+              data={studiosWithWinCountTop3}
+
+            >
               <Table
-                colls={[ 'Name', 'Win Count' ]}
+                colls={['Name', 'Win Count']}
                 data={studiosWithWinCountTop3}
               />
-            </div>
+            </Card>
           </div>
-        </div>
+        }
       </div>
       <div className="row mt-3 m-4">
-        <div className="col-sm-6 mb-3 mb-sm-0">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">Producers with longest and shortest interval between wins</h5>
+        {
+          maxMinWinIntervalForProducers &&
+          <div className="col-sm-12 mb-md-4 mb-sm-4">
+            <Card title='Producers with longest and shortest interval between wins'>
+              <h3>Maximum</h3>
               <Table
-                colls={[ 'Producer', 'Interval', 'Previous Year', 'Following Year' ]}
+                colls={['Producer', 'Interval', 'Previous Year', 'Following Year']}
                 data={maxMinWinIntervalForProducers.min}
               />
+              <h3>Minimum</h3>
               <Table
-                colls={[ 'Producer', 'Interval', 'Previous Year', 'Following Year' ]}
+                colls={['Producer', 'Interval', 'Previous Year', 'Following Year']}
                 data={maxMinWinIntervalForProducers.max}
               />
-            </div>
+            </Card>
           </div>
-        </div>
-        <div className="col-sm-6">
-          <div className="card">
-            <div className="card-body">
-              <h5 className="card-title">List movie winners by year</h5>
-              <input
-                type="number"
-                min='1980'
-                max='2023'
-                placeholder="Search by year"
-              />
+        }
+        {
+          listMovieWinnersByYear &&
+          <div className="col-sm-12 mb-md-4 mb-3">
+            <Card title='List movie winners by year'>
+              <form action="" onSubmit={handleSubmit}>
+                <div className='input-group'>
+
+                  <input
+                    className='form-control'
+                    type="number"
+                    min='1980'
+                    max='2023'
+                    name='yearFilter'
+                    value={yearFilterInput}
+                    onChange={onInputChange}
+                    placeholder="Search by year"
+                  />
+                  &nbsp;&nbsp;&nbsp;
+                  <div className='input-group-append'>
+                    <button className="form-control btn btn-primary">
+                      <b>
+                        <svg id="i-search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="18" height="17" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="5">
+                          <circle cx="14" cy="14" r="12" />
+                          <path d="M23 23 L30 30" />
+                        </svg>
+                      </b>
+                    </button>
+                  </div>
+                </div>
+              </form>
               <Table
-                colls={[ 'Id', 'Year', 'Title' ]}
-                data={[]}
+                colls={['Id', 'Year', 'Title']}
+                data={listMovieWinnersByYear}
               />
-            </div>
+            </Card>
           </div>
-        </div>
+        }
       </div>
+
     </>
   )
 }
