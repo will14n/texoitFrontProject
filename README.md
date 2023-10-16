@@ -15,5 +15,6 @@ Instalar as dependências
 npm install
 ```
 Rodar o projeto com o comando
-```npm run dev
+```sh
+npm run dev
 ```
