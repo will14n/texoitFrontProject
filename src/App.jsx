@@ -8,21 +8,19 @@ export const App = () => {
   return (
     <MovieProvider>
       <header data-bs-theme="dark">
-        <div className="navbar navbar-dark bg-dark shadow-sm">
-          <div className="container">
-            <Link to="/" className="navbar-brand d-flex align-items-center">
-              <label>Frontend React Test</label>
-            </Link>
-          </div>
+        <div className="navbar navbar-dark bg-dark shadow-sm ps-5">
+          <Link to="/" className="navbar-brand d-flex align-items-center pe-auto">
+            <label className="pe-auto">Frontend React Test</label>
+          </Link>
         </div>
       </header>
       <main>
         <div className="container-fluid text-center">
           <div className="row content ">
-            <div className="col-sm-2 sidenav bg-light">
+            <div className="col-sm-2 border border-right sidebar col-md-2 p-0 bg-body-tertiary">
               <NavBar />
             </div>
-            <div className="col-sm-10 text-left">
+            <div className="col-sm-10 col-md-10 text-start">
               <Routes>
                 <Route path='/'></Route>
                 <Route path='/dashboard' element={<DashboardScreen />}>Dashboard</Route>
