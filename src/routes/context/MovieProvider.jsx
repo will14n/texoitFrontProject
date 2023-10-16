@@ -10,6 +10,7 @@ export const MovieProvider = ({ children }) => {
   const [maxMinWinIntervalForProducers, setMaxMinWinIntervalForProducers] = useState()
   const [listMovieWinnersByYear, setListMovieWinnersByYear] = useState()
   const [yearFilter, setYearFilter] = useState()
+  const [pageLink, setPageLink] = useState()
 
   return (
     <MovieContext.Provider value={{
@@ -19,12 +20,14 @@ export const MovieProvider = ({ children }) => {
       maxMinWinIntervalForProducers,
       listMovieWinnersByYear,
       yearFilter,
+      pageLink,
       setMovies,
       setYearsWithMultipleWinners,
       setStudiosWithWinCountTop3,
       setMaxMinWinIntervalForProducers,
       setListMovieWinnersByYear,
       setYearFilter,
+      setPageLink,
     }}>
       {children}
     </MovieContext.Provider>
