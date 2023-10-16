@@ -1,3 +1,14 @@
+html, body{
+  max-height: 100% !important;
+  overflow: hidden;
+}
+
 body {
   margin: 0;
+}
+
+.btn-primary:focus {
+  background-color: #0d6efd !important;
+  border: 0 !important;
+  box-shadow: none !important;
 }
