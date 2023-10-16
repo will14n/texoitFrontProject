@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes, Link } from "react-router-dom"
-import { NavBar } from "./routes/components/NavBar"
+import { SideBar } from "./routes/components/SideBar"
 import { MovieScreen } from "./routes/MovieScreen"
 import { DashboardScreen } from "./routes/DashboardScreen"
 import { MovieProvider } from "./routes/context/MovieProvider"
@@ -18,7 +18,7 @@ export const App = () => {
         <div className="container-fluid text-center">
           <div className="row content ">
             <div className="col-sm-2 border border-right sidebar col-md-2 p-0 bg-body-tertiary">
-              <NavBar />
+              <SideBar />
             </div>
             <div className="col-sm-10 col-md-10 text-start">
               <Routes>
