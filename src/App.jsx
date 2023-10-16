@@ -10,19 +10,19 @@ export const App = () => {
       <header data-bs-theme="dark">
         <div className="navbar navbar-dark bg-dark shadow-sm ps-5">
           <Link to="/" className="navbar-brand d-flex align-items-center pe-auto">
-            <label className="pe-auto">Frontend React Test</label>
+            <label className="pe-auto">Frontend React</label>
           </Link>
         </div>
       </header>
       <main>
         <div className="container-fluid text-center">
           <div className="row content ">
-            <div className="col-sm-2 border border-right sidebar col-md-2 p-0 bg-body-tertiary">
+            <div className=" border border-right sidebar col-md-1 col-lg-2 p-0 bg-body-tertiary">
               <SideBar />
             </div>
-            <div className="col-sm-10 col-md-10 text-start">
+            <div className="col-md-11 col-lg-10 text-start">
               <Routes>
-                <Route path='/'></Route>
+                <Route path='/' element={<DashboardScreen />}></Route>
                 <Route path='/dashboard' element={<DashboardScreen />}>Dashboard</Route>
                 <Route path='/movie' element={<MovieScreen />} >Movies</Route>
                 <Route path='/*' element={<Navigate to='/' />}></Route>
