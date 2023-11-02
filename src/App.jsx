@@ -20,7 +20,7 @@ export const App = () => {
             <div className=" border border-right sidebar col-md-1 col-lg-2 p-0 bg-body-tertiary">
               <SideBar />
             </div>
-            <div className="col-md-11 col-lg-10 text-start">
+            <div className="col-md-11 col-lg-10 text-start overflow-auto vh-100">
               <Routes>
                 <Route path='/' element={<DashboardScreen />}></Route>
                 <Route path='/dashboard' element={<DashboardScreen />}>Dashboard</Route>
