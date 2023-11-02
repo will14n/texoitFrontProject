@@ -26,3 +26,6 @@ tr:nth-child(even) {
 table, ul {
   table-layout: fixed;
 }
+.pe-auto {
+  cursor: pointer !important;
+}

@@ -1,8 +1,9 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect } from "react"
 import { MovieContext } from "./context/MovieContext"
 import { Pagination } from "../components/Pagination"
 import { Card } from "../components/Card"
 import { fetchData } from "../helpers/fetchData"
+import { useSearchParams } from 'react-router-dom';
 
 export const MovieScreen = () => {
   const {
@@ -11,15 +12,29 @@ export const MovieScreen = () => {
     winnerFilter, setWinnerFilter,
     movieYearFilter, setMovieYearFilter,
   } = useContext(MovieContext)
+  const [searchParams, setSearchParams] = useSearchParams();
   const fetchMovies = async (page = 'page=0', winnerFilter = '', movieYearFilter = '') => {
-    const response = await fetchData(`${page}${winnerFilter}&year=${(movieYearFilter > 0 ? movieYearFilter : '')}&size=15`)
+    const pageNumber = page.split('=')
+    setSearchParams({ 'page': pageNumber[1], 'winner': winnerFilter, 'year': movieYearFilter })
+    const response = await fetchData(`${page}&winner=${winnerFilter}&year=${movieYearFilter}&size=15`)
     setMovies(response)
   }
 
-  useEffect(() => {
+  const handleYearChange = (year) => {
+    setMovieYearFilter(year)
+    if ((year > 1979 && year < 2020) || year === '') {
+      fetchMovies('page=0', winnerFilter, year)
+    }
+  }
+  const handleWinnerChange = (winner) => {
+    setWinnerFilter(winner)
+    // if((year > 1979 && year < 2020) || year === '') {
+    fetchMovies('page=0', winner, movieYearFilter)
+    // }
+  }
+  useEffect((e) => {
     fetchMovies(pageLink, winnerFilter, movieYearFilter)
-  }, [pageLink, winnerFilter, movieYearFilter])
-
+  }, [pageLink])
   return (
     <>
       <section className="mt-2 p-3">
@@ -36,10 +51,9 @@ export const MovieScreen = () => {
                     type="text"
                     className="form-control form-control-sm w-100px"
                     name="movieYearFilter"
-                    value={movieYearFilter}
+                    value={movieYearFilter || ''}
                     min="0"
-                    onChange={(e) => setMovieYearFilter(e.target.value)}
-                    onKeyUp={(text) => text.target.value > 0 ? text.target.value > 2023 ? text.target.value = '2023' : text.target.value : text.target.value = ''}
+                    onChange={(e) => handleYearChange(e.target.value)}
                     placeholder="Filter by year"
                   />
                 </th>
@@ -48,7 +62,7 @@ export const MovieScreen = () => {
                   <div>
                     Winner?
                   </div>
-                  <select className="form-select form-select-sm w-100px" name="winnerFilter" onChange={(e) => setWinnerFilter('&winner=' + e.target.value)}>
+                  <select className="form-select form-select-sm w-100px" name="winnerFilter" onChange={(e) => handleWinnerChange(e.target.value)}>
                     <option value=''>Yes/No</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>

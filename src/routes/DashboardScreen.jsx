@@ -19,7 +19,6 @@ export function DashboardScreen() {
     const response2 = await fetchData('projection=studios-with-win-count')
     setStudiosWithWinCountTop3(response2.studios.filter((i, e) => e <= 2))
     setMaxMinWinIntervalForProducers(await fetchData('projection=max-min-win-interval-for-producers'))
-    // console.log(response3)
     
   }
 
@@ -50,7 +49,6 @@ export function DashboardScreen() {
             colls={['Year', 'Win Count']}
             data={yearsWithMultipleWinners}
             loading={yearsWithMultipleWinners && false}
-
           >
             <Table
               colls={['Year', 'Win Count']}
@@ -58,14 +56,11 @@ export function DashboardScreen() {
             />
           </Card>
         </div>
-
         <div className="col-sm-6 col-md-6 mb-3 mb-sm-0">
-          {/* {console.log(studiosWithWinCountTop3)} */}
           <Card
             title='Top 3 studios with winners'
             colls={['Name', 'Win Count']}
             data={studiosWithWinCountTop3}
-
           >
             <Table
               colls={['Name', 'Win Count']}
@@ -90,7 +85,7 @@ export function DashboardScreen() {
           </Card>
         </div>
 
-        <div className="col-sm-12 mb-md-4 mb-3">
+        <div className="col-sm-12 mb-md-4 mb-sm-4 pb-4">
           <Card title='List movie winners by year'>
             <form action="" onSubmit={handleSubmit} className="mb-4">
               <div className='input-group'>
@@ -124,9 +119,7 @@ export function DashboardScreen() {
             />
           </Card>
         </div>
-
       </div>
-
     </>
   )
 }
