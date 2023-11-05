@@ -14,7 +14,7 @@ export const Pagination = ({ totalPages, page, setPageLink }) => {
             <Link
               onClick={() => setPageLink('page=0')}
               to="?page=0"
-              className={"d-md-none d-lg-block border-0 bg-light text-dark page-link " + ((currentPage === 0) ? 'disabled' : '')}
+              className={"d-sm-none d-md-none d-lg-block border-0 bg-light text-dark page-link " + ((currentPage === 0) ? 'disabled' : '')}
               aria-label="First"
             >
               <span aria-hidden="true">
@@ -68,7 +68,7 @@ export const Pagination = ({ totalPages, page, setPageLink }) => {
           <li className="page-item">
             <Link
               onClick={() => setPageLink('page=' + (lastPage))}
-              to={"?page=" + lastPage} className={"d-md-none d-lg-block border-0 bg-light text-dark page-link " + ((currentPage === (lastPage)) ? 'disabled' : '')}
+              to={"?page=" + lastPage} className={"d-sm-none d-md-none d-lg-block border-0 bg-light text-dark page-link " + ((currentPage === (lastPage)) ? 'disabled' : '')}
               aria-label="Last"
             >
               <span aria-hidden="true">
