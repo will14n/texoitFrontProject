@@ -1,18 +1,20 @@
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { MovieContext } from "../routes/context/MovieContext"
 
 export const useForm = (initialForm = {}) => {
-  const [formState, setFormState] = useState(initialForm)
 
-  const onInputChange = ({ target }) => {
+  const {
+    form, setForm,
+  } = useContext(MovieContext)
+
+  const onInputChange = (target) => {
     const { name, value } = target
-    setFormState({
-      ...formState,
+    setForm({
+      ...form,
       [name]: value
     })
   }
   return {
-    ...formState,
-    formState,
     onInputChange
   }
 }
