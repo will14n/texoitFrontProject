@@ -32,6 +32,10 @@ table, ul {
   padding-right: 0 !important;
 }
 
+.vh-100 {
+  height: 95vh !important;
+}
+
 .nav-link.active {
   width: 100% !important;
 }
@@ -56,5 +60,11 @@ table, ul {
 
   .col-sx-11 {
     width: calc((100% / 12)*11);
+  }
+}
+
+@media (max-height: 850px) {
+  .vh-100 {
+    height: 95vh !important;
   }
 }
