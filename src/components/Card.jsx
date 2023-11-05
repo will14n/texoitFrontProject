@@ -1,4 +1,4 @@
-export const Card = ({ title, titleAlign = 'text-start', rowsAlign = 'text-start', children }) => {
+export const Card = ({ title, children }) => {
   return (
     <>
       <div className="card">

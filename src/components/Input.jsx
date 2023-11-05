@@ -1,7 +1,6 @@
 import React from 'react'
 
 export const Input = ({ type = 'text', name, value = '', placeHolder, classs, handleChange }) => {
-  console.log(value)
   const validation = (value >= 1979 && value <= 2019) || value === '' ? '' : 'is-invalid'
   return (
     <>
