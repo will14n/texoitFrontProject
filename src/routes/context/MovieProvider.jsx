@@ -3,7 +3,6 @@ import { MovieContext } from './MovieContext'
 
 export const MovieProvider = ({ children }) => {
 
-
   const [movies, setMovies] = useState()
   const [yearsWithMultipleWinners, setYearsWithMultipleWinners] = useState()
   const [studiosWithWinCountTop3, setStudiosWithWinCountTop3] = useState()
@@ -13,6 +12,7 @@ export const MovieProvider = ({ children }) => {
   const [pageLink, setPageLink] = useState()
   const [winnerFilter, setWinnerFilter] = useState()
   const [movieYearFilter, setMovieYearFilter] = useState()
+  const [form, setForm] = useState()
 
   return (
     <MovieContext.Provider value={{
@@ -25,6 +25,7 @@ export const MovieProvider = ({ children }) => {
       pageLink,
       winnerFilter,
       movieYearFilter,
+      form,
       setMovies,
       setYearsWithMultipleWinners,
       setStudiosWithWinCountTop3,
@@ -34,6 +35,7 @@ export const MovieProvider = ({ children }) => {
       setPageLink,
       setWinnerFilter,
       setMovieYearFilter,
+      setForm,
     }}>
       {children}
     </MovieContext.Provider>

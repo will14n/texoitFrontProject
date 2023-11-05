@@ -2,24 +2,26 @@ import { useContext, useEffect, useState } from "react"
 import { MovieContext } from "./context/MovieContext"
 import Table from "../components/Table"
 import { Card } from "../components/Card"
+import { Input } from "../components/Input"
 import { useForm } from "../hooks/useForm"
 import { fetchData } from "../helpers/fetchData"
 
-export function DashboardScreen() {
+export const DashboardScreen = () => {
   const {
     yearsWithMultipleWinners, setYearsWithMultipleWinners,
     studiosWithWinCountTop3, setStudiosWithWinCountTop3,
     maxMinWinIntervalForProducers, setMaxMinWinIntervalForProducers,
     listMovieWinnersByYear, setListMovieWinnersByYear,
-    yearFilter, setYearFilter,
+    form, setForm,
   } = useContext(MovieContext)
+  const { onInputChange } = useForm(form)
   const fetchDashboard = async () => {
     const response = await fetchData('projection=years-with-multiple-winners')
+    setForm({ dashboard: { data: response.years } })
     setYearsWithMultipleWinners(response.years)
     const response2 = await fetchData('projection=studios-with-win-count')
     setStudiosWithWinCountTop3(response2.studios.filter((i, e) => e <= 2))
     setMaxMinWinIntervalForProducers(await fetchData('projection=max-min-win-interval-for-producers'))
-    
   }
 
   const fetchWinnersByYear = async (year) => {
@@ -28,27 +30,20 @@ export function DashboardScreen() {
     setListMovieWinnersByYear([yearWinners])
   }
 
-  const initialForm = {
-    yearFilter: ''
-  }
-  const { formState, yearFilterInput, onInputChange } = useForm(initialForm)
   const handleSubmit = (e) => {
     e.preventDefault()
-    setYearFilter(formState)
-    fetchWinnersByYear(formState.yearFilter)
+    onInputChange(e.target[0])
+    fetchWinnersByYear(form.yearFilter)
   }
   useEffect(() => {
     fetchDashboard()
   }, [])
   return (
     <>
-      <div className="row mt-3 m-4">
-        <div className="col-sm-6 col-md-6 mb-3 mb-sm-0">
+      <div className="row">
+        <div className="col-sm-12 col-md-6 p-sm-2 p-lg-4 p-md-3 card1">
           <Card
             title='List years with multiple winners'
-            colls={['Year', 'Win Count']}
-            data={yearsWithMultipleWinners}
-            loading={yearsWithMultipleWinners && false}
           >
             <Table
               colls={['Year', 'Win Count']}
@@ -56,11 +51,9 @@ export function DashboardScreen() {
             />
           </Card>
         </div>
-        <div className="col-sm-6 col-md-6 mb-3 mb-sm-0">
+        <div className="col-sm-12 col-md-6 p-sm-2 p-lg-4 p-md-3 ">
           <Card
             title='Top 3 studios with winners'
-            colls={['Name', 'Win Count']}
-            data={studiosWithWinCountTop3}
           >
             <Table
               colls={['Name', 'Win Count']}
@@ -69,8 +62,8 @@ export function DashboardScreen() {
           </Card>
         </div>
       </div>
-      <div className="row mt-3 m-4">
-        <div className="col-sm-12 mb-md-4 mb-sm-4">
+      <div className="row">
+        <div className="col-sm-12 col-lg-12 col-xl-6 p-sm-2 p-lg-4 p-md-3">
           <Card title='Producers with longest and shortest interval between wins'>
             <h3>Maximum</h3>
             <Table
@@ -85,20 +78,16 @@ export function DashboardScreen() {
           </Card>
         </div>
 
-        <div className="col-sm-12 mb-md-4 mb-sm-4 pb-4">
+        <div className="col-sm-12 col-lg-12 col-xl-6 p-sm-2 p-lg-4 p-md-3 pb-3">
           <Card title='List movie winners by year'>
-            <form action="" onSubmit={handleSubmit} className="mb-4">
+            <form action="" onSubmit={(e) => handleSubmit(e)} className="mb-4">
               <div className='input-group'>
-                <input
-                  className='form-control'
-                  type="number"
-                  min='1980'
-                  max='2023'
-                  name='yearFilter'
-                  value={yearFilterInput}
-                  onChange={onInputChange}
-                  onKeyUp={(text) => text.target.value > 0 ? text.target.value > 2023 ? text.target.value = '2023' : text.target.value : text.target.value = ''}
-                  placeholder="Search by year"
+                <Input
+                  type={"text"}
+                  name={'yearFilter'}
+                  value={form?.yearFilter}
+                  handleChange={e => onInputChange(e.target)}
+                  placeHolder={"Search by year"}
                 />
                 &nbsp;&nbsp;&nbsp;
                 <div className='input-group-append'>
