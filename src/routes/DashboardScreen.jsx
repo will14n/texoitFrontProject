@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect } from "react"
 import { MovieContext } from "./context/MovieContext"
 import Table from "../components/Table"
 import { Card } from "../components/Card"
@@ -38,6 +38,7 @@ export const DashboardScreen = () => {
   useEffect(() => {
     fetchDashboard()
   }, [])
+
   return (
     <>
       <div className="row">
